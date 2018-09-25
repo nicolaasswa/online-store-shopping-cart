@@ -1,3 +1,14 @@
+//Alert on page load
+$(document).ready(function() {
+ 
+    alert( "This page is loaded" );
+ 
+});
+
+/////////////////////////////////////////////
+
+
+
 $(".add-to-cart").click(function(event){
     event.preventDefault();
     var name = $(this).attr("data-name");
@@ -14,9 +25,8 @@ function displayCart(){
         output += "<li>"+cartArray[i].name+" "+cartArray[i].count+"</li>"
     }
     $("#show-cart").html(output);
+    $("#total-cart").html(totalCart() );
 }
-
-
 
 // Shopping Cart
 var cart = [];
@@ -26,10 +36,13 @@ var Item = function(name, price, count) {
     this.count = count
 };
 
+
+
 function addItemToCart(name, price, count) {
     for (var i in cart) {
         if (cart[i].name === name) {
             cart[i].count += count; 
+            saveCart();
             return;
         }
     }
@@ -37,6 +50,7 @@ function addItemToCart(name, price, count) {
     cart.push(item);
     saveCart();
 }
+
 
 function removeItemFromCart(name) {
     for (var i in cart) {
@@ -98,7 +112,7 @@ function countCart() { // -> return total count
 function totalCart() { // -> return total cost
     var totalCost = 0;
     for (var i in cart) {
-        totalCost += cart[i].price;   
+        totalCost += cart[i].price * cart[i].count;   
     }
     return totalCost;    
 }       
@@ -126,4 +140,6 @@ function saveCart() {
 function loadCart() {
     cart = JSON.parse (localStorage.getItem("shoppingCart"));
 }
+
 loadCart();
+displayCart();
